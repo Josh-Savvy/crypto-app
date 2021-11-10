@@ -74,13 +74,13 @@ a:hover {
 }
 
 @media screen and (max-width: 1300px) {
-  .main {
+  .main .comp_body {
     margin-left: 50px;
   }
 }
 
 @media screen and (max-width: 1170px) {
-  .main {
+  .main.comp_body {
     margin-left: 50px;
   }
 }

@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Link, Route } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Link, Route } from "react-router-dom";
 import { Layout, Typography, Space } from "antd";
 import { Navbar } from "./components";
 import "./App.css";
@@ -18,7 +18,7 @@ const App = () => {
       </div>
       <div className="main">
         <div className="routes">
-          <Routes>
+          <Switch>
             <Route exact path="/">
               <Homepage />
             </Route>
@@ -34,10 +34,25 @@ const App = () => {
             <Route exact path="/news">
               <News />
             </Route>
-          </Routes>
+          </Switch>
+        </div>
+        <div className="footer">
+          <Typography.Title
+            level={5}
+            style={{ color: "white", textAlign: "center" }}
+          >
+            CryptoApp
+            <br />
+            Copyright, 2021&copy;
+            <br /> All rights reserved
+          </Typography.Title>
+          <Space>
+            <Link to="/">Home</Link>
+            <Link to="/exchanges">Exchanges</Link>
+            <Link to="/news">News</Link>
+          </Space>
         </div>
       </div>
-      <div className="footer"></div>
     </div>
   );
 };

@@ -1,7 +1,7 @@
 import React from "react";
 
 const Exchanges = () => {
-  return <div>CryptoCurrencies</div>;
+  return <div>Exchanges</div>;
 };
 
 export default Exchanges;
