@@ -1,48 +1,35 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import millify from "millify";
 import { Typography, Statistic, Row, Col } from "antd";
 import { Link } from "react-router-dom";
-import { useGetCryptosQuery } from "../services/api";
-import axios from "axios";
+import { useGetCryptosQuery } from "../services/cryptoApi";
+import CryptoCurrencies from "../pages/cryptoCurrencies";
+import News from "../pages/news";
 
 const { Title } = Typography;
 
 const Homepage = () => {
-  const { isFetching } = useGetCryptosQuery();
+  const { data, isFetching } = useGetCryptosQuery(10);
+  const response = data?.data;
+  console.log(response);
 
-  // Data Fetch States Variables
-  const [globalStats, setGlobalStats] = useState();
-  const [cryptoIntheWorld, setCryptoIntheWorld] = useState();
+  const [globalStats, setGlobalStats] = useState([]);
 
-  let options = {
-    method: "GET",
-    url: "https://coinlore-cryptocurrency.p.rapidapi.com/api/global/",
-    headers: {
-      "x-rapidapi-host": "coinlore-cryptocurrency.p.rapidapi.com",
-      "x-rapidapi-key": "884f46e107msh8e6d0969eccbb16p11a973jsn639998c9fab8",
-    },
-  };
-  useEffect(() => {
-    axios
-      .request(options)
-      .then(function (response) {
-        const globalStats = response.data[0];
-        setGlobalStats(globalStats);
-        console.log(globalStats);
-      })
-      .catch(function (error) {
-        console.error(error);
-      });
-  }, []);
+  if (isFetching) {
+    return "Loading...";
+  } else {
+    setGlobalStats(response);
+  }
 
-  if (isFetching) return "Loading...";
   const {
-    active_markets,
+    markets,
     total_volume,
-    total_mcap,
-    avg_change_percent,
-    coins_count,
+    total_market_cap,
+    ongoing_icos,
+    active_cryptocurrencies,
   } = globalStats;
+  const total_v = total_volume?.btc;
+  const total_mcap = total_market_cap?.btc;
 
   return (
     <>
@@ -52,16 +39,13 @@ const Homepage = () => {
         </Title>
         <Row>
           <Col span={12}>
-            <Statistic title="Total Cryptocurrencies" value={coins_count} />
+            <Statistic
+              title="Total Cryptocurrencies"
+              value={active_cryptocurrencies}
+            />
           </Col>
           <Col span={12}>
-            <Statistic
-              title="Total Exchanges"
-              value={millify(avg_change_percent + 213232, {
-                precision: 2,
-                units: ["k"],
-              })}
-            />
+            <Statistic title="Total Exchanges" value={millify(markets)} />
           </Col>
           <Col span={12}>
             <Statistic
@@ -72,13 +56,15 @@ const Homepage = () => {
           <Col span={12}>
             <Statistic
               title="Total 24h Volume"
-              value={millify(total_volume, { precision: 2 })}
+              value={millify(total_v, { precision: 2 })}
             />
           </Col>
           <Col span={12}>
             <Statistic
               title="Total Markets"
-              value={millify(active_markets, { precision: 2 })}
+              value={millify(ongoing_icos, {
+                units: ["k"],
+              })}
             />
           </Col>
         </Row>
@@ -90,6 +76,16 @@ const Homepage = () => {
             <Link to="/cryptocurrencies">Show more</Link>
           </Title>
         </div>
+        <CryptoCurrencies simplified />
+        <div className="home-heading-container">
+          <Title level={2} className="home-title">
+            Latest Cryptocurrency News
+          </Title>
+          <Title level={3} className="show-more">
+            <Link to="/news">Show more</Link>
+          </Title>
+        </div>
+        <News simplified />
       </div>
     </>
   );

@@ -37,15 +37,12 @@ const App = () => {
           </Switch>
         </div>
         <div className="footer">
-          <Typography.Title
+          <h4
             level={5}
             style={{ color: "white", textAlign: "center" }}
           >
-            CryptoApp
-            <br />
-            Copyright, 2021&copy;
-            <br /> All rights reserved
-          </Typography.Title>
+            Copyright, 2021&copy; CryptoApp
+          </h4>
           <Space>
             <Link to="/">Home</Link>
             <Link to="/exchanges">Exchanges</Link>
